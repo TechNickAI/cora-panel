@@ -48,19 +48,19 @@ def create_tools(settings):
     return tools
 
 
-def get_chat_model(llm, temperature=0.7, streaming=True):
+def get_chat_model(llm, temperature=0.7):
     if llm == GPT4O:
-        return ChatOpenAI(model="gpt-4o", temperature=temperature, streaming=streaming)
+        return ChatOpenAI(model="gpt-4o", temperature=temperature, streaming=True)
     elif llm == CLAUDE:
-        return ChatAnthropic(model="claude-3-5-sonnet-20240620", temperature=temperature, streaming=streaming)
+        return ChatAnthropic(model="claude-3-5-sonnet-20240620", temperature=temperature, streaming=False)
     elif llm == GROQ:
-        return ChatGroq(model="llama3-70b-8192", temperature=temperature, streaming=streaming)
+        return ChatGroq(model="llama3-70b-8192", temperature=temperature, streaming=False)
     else:
         raise ValueError(f"Unknown LLM: {llm}")
 
 
 def create_agent_graph(settings):
-    llm = get_chat_model(settings["llm"], temperature=0.7, streaming=True)
+    llm = get_chat_model(settings["llm"], temperature=0.7)
     # Set up a memory saver
     memory = MemorySaver()
     tools = create_tools(settings)

@@ -7,6 +7,7 @@ import uuid
 # ---------------------------------------------------------------------------- #
 #                                  Panel Setup                                 #
 # ---------------------------------------------------------------------------- #
+CORA = "Cora"
 accent_color = "#A01346"
 pn.extension(notifications=True, loading_indicator=True, global_loading_spinner=True)
 
@@ -71,16 +72,18 @@ def callback(user_request, user, chat_interface: pn.chat.ChatInterface):
         enhanced_request = user_request
 
     # Set up the agent and the callback handler
-    callback_handler = pn.chat.langchain.PanelCallbackHandler(chat_interface)
+    callback_handler = pn.chat.langchain.PanelCallbackHandler(chat_interface, user=CORA, avatar="assets/logo.png")
     runnable_config = RunnableConfig(configurable={"thread_id": thread_id})
     runnable_config["callbacks"] = [callback_handler]
 
     chat_history.append(HumanMessage(content=enhanced_request))
     result = agent_graph.invoke({"messages": chat_history}, config=runnable_config)
 
-    # Handle both single message and list of messages
     ai_response = result["messages"][-1].content
-    ai_response_text = ai_response[0]["text"] if isinstance(ai_response, list) else ai_response
+    if isinstance(ai_response, list):
+        ai_response_text = ai_response[0]["text"]
+    else:
+        ai_response_text = ai_response
 
     chat_history.append(AIMessage(content=ai_response_text))
 

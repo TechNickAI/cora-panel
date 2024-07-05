@@ -1,7 +1,6 @@
 from agent_graph import create_agent_graph, prompt_engineer
 from langchain.schema.runnable.config import RunnableConfig
 from langchain_core.messages import AIMessage, HumanMessage
-from loguru import logger
 import panel as pn
 
 pn.extension(notifications=True)
@@ -12,9 +11,7 @@ chat_history = []
 
 
 def callback(user_request, user, chat_interface: pn.chat.ChatInterface):
-    logger.debug(chat_history)
-
-    # Pre-processing
+    # Pre-process the user request
     enhanced_request = prompt_engineer(user_request).content
     chat_interface.send(f"*Enhanced Request*:\n\n{enhanced_request}", user="System", respond=False)
 
@@ -32,4 +29,13 @@ def callback(user_request, user, chat_interface: pn.chat.ChatInterface):
     return ai_response_text
 
 
-pn.chat.ChatInterface(callback=callback, callback_exception="verbose").servable()
+# Create the ChatInterface with our custom options
+chat_interface = pn.chat.ChatInterface(
+    callback=callback,
+    callback_exception="verbose",
+    show_rerun=False,
+    show_stop=False,
+)
+
+# Make the chat interface servable
+chat_interface.servable()

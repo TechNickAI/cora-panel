@@ -5,12 +5,13 @@ from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.prebuilt import create_react_agent
+from panel.chat.langchain import PanelCallbackHandler
 
 CLAUDE = "Anthropic Claude 3.5"
 GPT4O = "OpenAI GPT-4o"
 GROQ = "Groq"
 
-llm_options = [CLAUDE, GPT4O]  # Groq is not supported yet (incompatible with langgraph?)
+llm_options = [GPT4O, CLAUDE]  # Groq is not supported yet (incompatible with langgraph?)
 
 assistant_prompt = """
 You are a friendly and supportive AI assistant, acting as a business and life execution partner.
@@ -66,3 +67,7 @@ def create_agent_graph(settings):
     tools = create_tools(settings)
 
     return create_react_agent(model=llm, tools=tools, checkpointer=memory, messages_modifier=assistant_prompt)
+
+
+class OurLangchainCallbackHandler(PanelCallbackHandler):
+    pass

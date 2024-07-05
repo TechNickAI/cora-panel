@@ -1,4 +1,4 @@
-from agent_graph import create_agent_graph, llm_options, prompt_engineer
+from agent_graph import OurLangchainCallbackHandler, create_agent_graph, llm_options, prompt_engineer
 from langchain.schema.runnable.config import RunnableConfig
 from langchain_core.messages import AIMessage, HumanMessage
 import panel as pn
@@ -72,7 +72,7 @@ def callback(user_request, user, chat_interface: pn.chat.ChatInterface):
         enhanced_request = user_request
 
     # Set up the agent and the callback handler
-    callback_handler = pn.chat.langchain.PanelCallbackHandler(chat_interface, user=CORA, avatar="assets/logo.png")
+    callback_handler = OurLangchainCallbackHandler(chat_interface, user=CORA, avatar="assets/logo.png")
     runnable_config = RunnableConfig(configurable={"thread_id": thread_id})
     runnable_config["callbacks"] = [callback_handler]
 
@@ -87,8 +87,6 @@ def callback(user_request, user, chat_interface: pn.chat.ChatInterface):
 
     chat_history.append(AIMessage(content=ai_response_text))
 
-    return ai_response_text
-
 
 # ---------------------------------------------------------------------------- #
 #                          Panel Interface and Layout                          #
@@ -98,6 +96,7 @@ def callback(user_request, user, chat_interface: pn.chat.ChatInterface):
 chat_interface = pn.chat.ChatInterface(
     callback=callback,
     callback_exception="verbose",
+    callback_user=CORA,
     show_rerun=False,
     show_stop=False,
     show_undo=False,

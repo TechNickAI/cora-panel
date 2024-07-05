@@ -3,4 +3,5 @@ langchain_community
 langchain-groq
 langchain_openai
 langgraph
+loguru
 panel

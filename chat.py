@@ -36,6 +36,11 @@ chat_interface = pn.chat.ChatInterface(
     show_rerun=False,
     show_stop=False,
     show_undo=False,
+    message_params={
+        "show_timestamp": False,
+        "reaction_icons": {},
+        "default_avatars": {"Assistant": "assets/logo.png"},
+    },
 )
 
 template = pn.template.FastListTemplate(

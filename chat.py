@@ -35,7 +35,17 @@ chat_interface = pn.chat.ChatInterface(
     callback_exception="verbose",
     show_rerun=False,
     show_stop=False,
+    show_undo=False,
 )
 
-# Make the chat interface servable
-chat_interface.servable()
+template = pn.template.FastListTemplate(
+    title="Cora: Heart-Centered AI 🤖 + 💙",
+    main=[chat_interface],
+    logo="assets/logo.png",
+    favicon="assets/logo.png",
+    corner_radius=5,
+    theme_toggle=False,
+    accent="#A01346",
+)
+
+template.servable()

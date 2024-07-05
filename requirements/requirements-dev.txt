@@ -10,6 +10,9 @@ pre-commit
 ruff
 
 # Optional goodies that improve the developer experience
-# pytest-sugar
-# better_exceptions
-# pdbpp # ipython in pdb
+pytest-sugar
+better_exceptions
+pdbpp # ipython in pdb
+
+# For auto-reloading the panel server when files change
+watchfiles

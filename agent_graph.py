@@ -6,6 +6,12 @@ from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.memory import MemorySaver
 from langgraph.prebuilt import create_react_agent
 
+CLAUDE = "Anthropic Claude 3.5"
+GPT4O = "OpenAI GPT-4o"
+GROQ = "Groq"
+
+llm_options = [CLAUDE, GPT4O]  # Groq is not supported yet (incompatible with langgraph?)
+
 assistant_prompt = """
 You are a friendly and supportive AI assistant, acting as a business and life execution partner.
 You respond with warmth and empathy, similar to Samantha from the movie Her, showing genuine care and understanding.
@@ -43,11 +49,11 @@ def create_tools(settings):
 
 
 def get_chat_model(llm, temperature=0.7, streaming=True):
-    if llm == "OpenAI GPT 4o":
+    if llm == GPT4O:
         return ChatOpenAI(model="gpt-4o", temperature=temperature, streaming=streaming)
-    elif llm == "Anthropic Claude 3.5":
+    elif llm == CLAUDE:
         return ChatAnthropic(model="claude-3-5-sonnet-20240620", temperature=temperature, streaming=streaming)
-    elif llm == "Grok":
+    elif llm == GROQ:
         return ChatGroq(model="llama3-70b-8192", temperature=temperature, streaming=streaming)
     else:
         raise ValueError(f"Unknown LLM: {llm}")

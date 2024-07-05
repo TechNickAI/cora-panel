@@ -1,16 +1,13 @@
-import panel as pn
 from agent_graph import create_agent_graph
-
 from langchain.schema.runnable.config import RunnableConfig
-from langchain_core.messages import HumanMessage, AIMessage
+from langchain_core.messages import AIMessage, HumanMessage
+import panel as pn
 
 pn.extension()
 
 agent_graph = create_agent_graph({"llm": "Anthropic Claude 3.5", "search_web": True})
 
 chat_history = []
-
-from rich import inspect
 
 
 def callback(contents, user, instance):
@@ -21,8 +18,6 @@ def callback(contents, user, instance):
     chat_history.append(HumanMessage(content=contents))
 
     result = agent_graph.invoke({"messages": chat_history}, config=runnable_config)
-
-    inspect(result)
 
     ai_response_text = result["messages"][-1].content[0]["text"]
 

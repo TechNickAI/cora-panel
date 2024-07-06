@@ -92,8 +92,15 @@ def callback(user_request, user, chat_interface: pn.chat.ChatInterface):
 #                          Panel Interface and Layout                          #
 # ---------------------------------------------------------------------------- #
 
+# Set up user and avatar
+email = pn.state.user
+username = email.split("@")[0] if "@" in email else email
+avatar = username[0].upper()
+
 # Create the ChatInterface with our custom options
 chat_interface = pn.chat.ChatInterface(
+    user=username,
+    avatar=avatar,
     callback=callback,
     callback_exception="verbose",
     callback_user=CORA,

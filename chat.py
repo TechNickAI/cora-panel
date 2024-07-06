@@ -1,6 +1,9 @@
 from agent_graph import OurLangchainCallbackHandler, create_agent_graph, llm_options, prompt_engineer
 from langchain.schema.runnable.config import RunnableConfig
 from langchain_core.messages import AIMessage, HumanMessage
+from loguru import logger
+from zep_cloud.client import Zep
+from zep_cloud.errors import NotFoundError
 import panel as pn
 import uuid
 
@@ -10,6 +13,34 @@ import uuid
 CORA = "Cora"
 accent_color = "#A01346"
 pn.extension(notifications=True, loading_indicator=True, global_loading_spinner=True)
+
+# ---------------------------------------------------------------------------- #
+#                                  Zep Setup                                   #
+# ---------------------------------------------------------------------------- #
+
+zep_client = Zep()
+
+
+def setup_user(email):
+    logger.info(f"Setting up user {email}")
+    # Extract username from email
+    username = email.split("@")[0] if "@" in email else email
+
+    # Try to get the user
+    try:
+        zep_user = zep_client.user.get(email)
+    except NotFoundError:
+        logger.info(f"User {email} not found, creating new user")
+        zep_user = zep_client.user.add(user_id=email, email=email)
+
+    # Create avatar
+    avatar = username[0].upper()
+
+    return zep_user, username, avatar
+
+
+# Set up user and avatar
+zep_user, username, avatar = setup_user(pn.state.user)
 
 # ------------------------------ Settings Modal ------------------------------ #
 
@@ -92,10 +123,6 @@ def callback(user_request, user, chat_interface: pn.chat.ChatInterface):
 #                          Panel Interface and Layout                          #
 # ---------------------------------------------------------------------------- #
 
-# Set up user and avatar
-email = pn.state.user
-username = email.split("@")[0] if "@" in email else email
-avatar = username[0].upper()
 
 # Create the ChatInterface with our custom options
 chat_interface = pn.chat.ChatInterface(

@@ -1,7 +1,8 @@
 langchain_anthropic
 langchain_community
-langchain-groq
+langchain_groq
 langchain_openai
 langgraph
 loguru
 panel
+zep_cloud

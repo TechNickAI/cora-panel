@@ -63,6 +63,7 @@ httpx==0.27.0
     #   anthropic
     #   groq
     #   openai
+    #   zep-cloud
 huggingface-hub==0.23.4
     # via tokenizers
 idna==3.7
@@ -168,6 +169,7 @@ pydantic==2.8.2
     #   langchain-core
     #   langsmith
     #   openai
+    #   zep-cloud
 pydantic-core==2.20.1
     # via pydantic
 python-dateutil==2.9.0.post0
@@ -235,6 +237,7 @@ typing-extensions==4.12.2
     #   pydantic-core
     #   sqlalchemy
     #   typing-inspect
+    #   zep-cloud
 typing-inspect==0.9.0
     # via dataclasses-json
 tzdata==2024.1
@@ -251,3 +254,5 @@ xyzservices==2024.6.0
     #   panel
 yarl==1.9.4
     # via aiohttp
+zep-cloud==1.0.6
+    # via -r requirements/requirements.in
